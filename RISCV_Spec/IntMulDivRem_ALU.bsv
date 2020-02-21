@@ -209,8 +209,16 @@ module mkIntMulDivRem_ALU (IntMulDivRem_ALU_IFC);
 
    method ActionValue #(Word) m_REMW   (Word v_rs1, Word v_rs2);
       actionvalue
-	 Int #(32) s_v_rs1_32 = unpack (v_rs1 [31:0]);
-	 Int #(32) s_v_rs2_32 = unpack (v_rs2 [31:0]);
+	 Int #(64) s_v_rs1_32 = unpack ({v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], 
+                                         v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], 
+                                         v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], 
+                                         v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], v_rs1 [31], 
+                                         v_rs1 [31:0]});
+	 Int #(64) s_v_rs2_32 = unpack ({v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], 
+                                         v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31],             
+                                         v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31],             
+                                         v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31], v_rs2 [31],             
+                                         v_rs2 [31:0]});
 	 Word v_rd;
 
 	 // Divide by 0; result defined as s_v_rs1

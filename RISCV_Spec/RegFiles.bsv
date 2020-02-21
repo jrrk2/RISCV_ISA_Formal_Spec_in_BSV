@@ -231,7 +231,7 @@ module mkRegFiles (RegFiles_IFC);
 `endif
 
    Reg #(Word) rg_dpc  <- mkRegU;
-   Reg #(Word) rg_dcsr <- mkRegU;
+   Reg #(Bit #(32)) rg_dcsr <- mkRegU;
 
    // ----------------------------------------------------------------
    // Reset.
@@ -387,7 +387,7 @@ module mkRegFiles (RegFiles_IFC);
 `endif
 
 	 csr_addr_dpc:  m_csr_value = tagged Valid rg_dpc;
-	 csr_addr_dcsr: m_csr_value = tagged Valid rg_dcsr;
+	 csr_addr_dcsr: m_csr_value = tagged Valid (extend (rg_dcsr));
 
 	 default: m_csr_value = tagged Invalid;
       endcase
@@ -400,7 +400,7 @@ module mkRegFiles (RegFiles_IFC);
    function Action fav_write_csr (CSR_Addr csr_addr, Word word, Bool incr_minstret);
       action
 	 if (csr_addr == csr_minstret)
-	    rg_minstret <= { rg_minstret [63:32], word };
+	    rg_minstret <= truncate ({ rg_minstret [63:32], word });
 `ifdef RV32
 	 else if (csr_addr == csr_minstreth)
 	    rg_minstret <= { word, rg_minstret [31:0] };
@@ -434,7 +434,7 @@ module mkRegFiles (RegFiles_IFC);
 	       csr_mcounteren:rg_mcounteren <= word_to_mcounteren(word);
 `endif
 
-	       csr_mcycle:    rg_mcycle   <= { rg_mcycle   [63:32], word };
+	       csr_mcycle:    rg_mcycle   <= truncate ({ rg_mcycle   [63:32], word });
 
 `ifdef RV32
 	       csr_mcycleh:   rg_mcycle   <= { word, rg_mcycle   [31:0] };

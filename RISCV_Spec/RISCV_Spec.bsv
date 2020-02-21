@@ -180,7 +180,7 @@ module mkRISCV_Spec #(RegFiles_IFC regfiles,          // interface to GPR and CS
 
    Reg #(CPU_STATE) cpu_state   <- mkReg (STATE_IDLE);
    Reg #(Addr)      rg_mem_addr <- mkRegU;    // Effective addr in LD/ST
-   Reg #(Word)      rg_instr    <- mkRegU;    // Current instruction
+   Reg #(Instr)     rg_instr    <- mkRegU;    // Current instruction
 
    // Stop- and step-requests
    Reg #(Bool) rg_stop_req <- mkReg (False);    // stop-request from debugger
@@ -1113,8 +1113,8 @@ module mkRISCV_Spec #(RegFiles_IFC regfiles,          // interface to GPR and CS
 	 // IMem response is ok
 	 tagged IMem_Resp_Ok  .instr:
 	    begin
-	       rg_instr <= instr;
-	       fa_exec (instr);
+	       rg_instr <= truncate (instr);
+	       fa_exec (truncate (instr));
 	    end
       endcase
    endrule
